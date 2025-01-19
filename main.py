@@ -3,12 +3,21 @@ def main():
     text = get_book_text(book_path)
     number_of_words = get_num_words(text)
     characters = get_num_repeated_characters(text)
-    # print(f"{number_of_words} words found in the book")
-    print(characters)
+    list_from_dict = sort_on(characters)
+    #characters.sort(reverse=True, key=sort_on)
+    print("--- Begin report of books/frankenstein.txt")
+    print(f"{number_of_words} words found in the book")
+    print(list_from_dict)
+    print("--- End Report")
 
-def get_num_repeated_characters(book):
+def sort_on(chars):
+    chars_sorted =  dict(sorted(chars.items(), key=lambda item: item[1], reverse = True))
+    list_from_dict = list(chars_sorted.items())
+    return list_from_dict
+
+def get_num_repeated_characters(text):
     chars = {}
-    for c in book:
+    for c in text:
         lowered_char = c.lower()
         if lowered_char in chars:
             chars[lowered_char] +=1
