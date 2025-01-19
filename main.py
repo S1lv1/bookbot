@@ -5,10 +5,13 @@ def main():
     characters = get_num_repeated_characters(text)
     list_from_dict = sort_on(characters)
     #characters.sort(reverse=True, key=sort_on)
-    print("--- Begin report of books/frankenstein.txt")
+    print("--- Begin report of books/frankenstein.txt ---")
     print(f"{number_of_words} words found in the book")
-    print(list_from_dict)
-    print("--- End Report")
+    print("\n")
+    for item in list_from_dict:
+        if item[0].isalpha():
+            print(f"The '{item[0]}' character was found {item[1]} times")
+    print("--- End Report ---")
 
 def sort_on(chars):
     chars_sorted =  dict(sorted(chars.items(), key=lambda item: item[1], reverse = True))
