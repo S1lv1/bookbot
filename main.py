@@ -1,40 +1,54 @@
 def main():
-    book_path = "books/frankenstein.txt" 
+    book_path = "books/frankenstein.txt"
     text = get_book_text(book_path)
-    number_of_words = get_num_words(text)
-    characters = get_num_repeated_characters(text)
-    list_from_dict = sort_on(characters)
-    #characters.sort(reverse=True, key=sort_on)
-    print("--- Begin report of books/frankenstein.txt ---")
-    print(f"{number_of_words} words found in the book")
-    print("\n")
-    for item in list_from_dict:
-        if item[0].isalpha():
-            print(f"The '{item[0]}' character was found {item[1]} times")
-    print("--- End Report ---")
+    num_words = get_num_words(text)
+    chars_dict = get_chars_dict(text)
+    chars_sorted_list = chars_dict_to_sorted_list(chars_dict)
 
-def sort_on(chars):
-    chars_sorted =  dict(sorted(chars.items(), key=lambda item: item[1], reverse = True))
-    list_from_dict = list(chars_sorted.items())
-    return list_from_dict
+    print(f"--- Begin report of {book_path} ---")
+    print(f"{num_words} words found in the document")
+    print()
 
-def get_num_repeated_characters(text):
+    for item in chars_sorted_list:
+        if not item["char"].isalpha():
+            continue
+        print(f"The '{item['char']}' character was found {item['num']} times")
+
+    print("--- End report ---")
+
+
+def get_num_words(text):
+    words = text.split()
+    return len(words)
+
+
+def sort_on(d):
+    return d["num"]
+
+
+def chars_dict_to_sorted_list(num_chars_dict):
+    sorted_list = []
+    for ch in num_chars_dict:
+        sorted_list.append({"char": ch, "num": num_chars_dict[ch]})
+    sorted_list.sort(reverse=True, key=sort_on)
+    return sorted_list
+
+
+def get_chars_dict(text):
     chars = {}
     for c in text:
-        lowered_char = c.lower()
-        if lowered_char in chars:
-            chars[lowered_char] +=1
+        lowered = c.lower()
+        if lowered in chars:
+            chars[lowered] += 1
         else:
-            chars[lowered_char] = 1
-
+            chars[lowered] = 1
     return chars
 
-def get_num_words(book):
-    words = book.split()
-    return len(words)
+
 
 def get_book_text(path):
     with open(path) as f:
         return f.read()
+
 
 main()
